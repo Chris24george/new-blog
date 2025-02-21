@@ -3,13 +3,26 @@ import '@fontsource/playfair-display/400.css';
 import '@fontsource/playfair-display/700.css';
 import '@fontsource/lora/400.css';
 import '@fontsource/lora/400-italic.css';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  article?: boolean;
 }
 
-const { title, description = 'An elegant blog' } = Astro.props;
+const { 
+  title, 
+  description = 'Essays on technology, philosophy, and the art of thinking', 
+  image = '/social-card.jpg',
+  article = false 
+} = Astro.props;
+
+// Handle missing site URL gracefully
+const siteUrl = Astro.site?.origin ?? '';
+const canonicalURL = new URL(Astro.url.pathname, siteUrl || 'https://christonotes.com');
+const ogImageUrl = new URL(image, siteUrl || 'https://christonotes.com');
 ---
 
 <!doctype html>
@@ -17,19 +30,69 @@ const { title, description = 'An elegant blog' } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Performance optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#faf6f1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content="Christo Notes" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImageUrl} />
+
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title={`RSS Feed for ${title}`} href="/rss.xml" />
+    
+    <!-- Security -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    
+    <!-- Performance: Preload critical assets -->
+    <link rel="preload" as="style" href="/@fontsource/playfair-display/400.css" />
+    <link rel="preload" as="style" href="/@fontsource/playfair-display/700.css" />
+    <link rel="preload" as="style" href="/@fontsource/lora/400.css" />
   </head>
   <body>
     <div class="container">
       <header>
         <nav>
-          <a href="/" class="site-title">Elegant Scroll</a>
+          <a href="/" class="site-title">Christo Notes</a>
           <div class="nav-links">
-            <a href="/blog">Blog</a>
             <a href="/about">About</a>
+            <ThemeToggle />
+            <a href="/rss.xml" aria-label="RSS Feed">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 11a9 9 0 0 1 9 9" />
+                <path d="M4 4a16 16 0 0 1 16 16" />
+                <circle cx="5" cy="19" r="1" />
+              </svg>
+            </a>
           </div>
         </nav>
       </header>
@@ -37,7 +100,7 @@ const { title, description = 'An elegant blog' } = Astro.props;
         <slot />
       </main>
       <footer>
-        <p>&copy; {new Date().getFullYear()} Your Name. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Christo. All rights reserved.</p>
       </footer>
     </div>
   </body>
@@ -45,10 +108,30 @@ const { title, description = 'An elegant blog' } = Astro.props;
 
 <style is:global>
   :root {
+    /* Light theme colors */
     --bg-color: #faf6f1;
     --text-color: #2c1810;
     --accent-color: #8b4513;
     --border-color: rgba(139, 69, 19, 0.2);
+    
+    /* Transition for theme switching */
+    --theme-transition: background-color 0.3s ease,
+                       color 0.3s ease,
+                       border-color 0.3s ease;
+  }
+
+  /* Dark theme colors */
+  [data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color: #e1d9d1;
+    --accent-color: #d4915b;
+    --border-color: rgba(225, 217, 209, 0.1);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      transition: var(--theme-transition);
+    }
   }
 
   html {
@@ -96,13 +179,17 @@ const { title, description = 'An elegant blog' } = Astro.props;
 
   .nav-links {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
+    align-items: center;
   }
 
   .nav-links a {
     color: var(--text-color);
     text-decoration: none;
     transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .nav-links a:hover {
@@ -115,6 +202,45 @@ const { title, description = 'An elegant blog' } = Astro.props;
     border-top: 1px solid var(--border-color);
     text-align: center;
     font-size: 0.9rem;
-    color: rgba(44, 24, 16, 0.8);
+    color: var(--text-color);
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+
+    nav {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .nav-links {
+      gap: 1.5rem;
+    }
+  }
+
+  /* Performance optimizations for images */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Improved accessibility styles */
+  :focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 </style>

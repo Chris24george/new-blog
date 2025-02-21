@@ -5,36 +5,80 @@ import { format } from 'date-fns';
 
 const posts = await getCollection('blog');
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Group posts by year
+const postsByYear = posts.reduce((acc, post) => {
+  const year = post.data.date.getFullYear();
+  if (!acc[year]) {
+    acc[year] = [];
+  }
+  acc[year].push(post);
+  return acc;
+}, {} as Record<number, typeof posts>);
+
+const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
 ---
 
-<Layout title="Blog | Elegant Scroll">
-  <h1>Blog Posts</h1>
-  
-  {posts.length === 0 ? (
-    <p class="empty-state">No posts yet. Create your first post in the <code>src/content/blog/</code> directory!</p>
-  ) : (
-    <ul class="post-list">
-      {posts.map((post) => (
-        <li>
-          <article class="post-preview">
-            <a href={`/blog/${post.slug}`}>
-              <h2>{post.data.title}</h2>
-              <time datetime={post.data.date.toISOString()}>
-                {format(post.data.date, 'MMMM d, yyyy')}
-              </time>
-              <p>{post.data.description}</p>
-            </a>
-          </article>
-        </li>
-      ))}
-    </ul>
-  )}
+<Layout title="Essays | Christo Notes">
+  <div class="archive-container">
+    <header>
+      <h1>Essays</h1>
+      <p class="subtitle">A chronological collection of thoughts and reflections</p>
+    </header>
+
+    {posts.length === 0 ? (
+      <p class="empty-state">No essays yet. Create your first essay in the <code>src/content/blog/</code> directory!</p>
+    ) : (
+      <div class="timeline">
+        {years.map(year => (
+          <section class="year-section">
+            <h2>{year}</h2>
+            <div class="posts-list">
+              {postsByYear[Number(year)].map(post => (
+                <article class="post-item">
+                  <time datetime={post.data.date.toISOString()}>
+                    {format(post.data.date, 'MMM d')}
+                  </time>
+                  <a href={`/blog/${post.slug}`}>
+                    <h3>{post.data.title}</h3>
+                    <p>{post.data.description}</p>
+                  </a>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    )}
+  </div>
 </Layout>
 
 <style>
+  .archive-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
   h1 {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
+    font-size: 3rem;
+    margin: 0;
+    background: linear-gradient(45deg, var(--text-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: rgba(44, 24, 16, 0.8);
+    font-style: italic;
+    margin-top: 0.5rem;
   }
 
   .empty-state {
@@ -45,47 +89,126 @@ posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
     font-style: italic;
   }
 
-  .post-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
   }
 
-  .post-preview {
-    margin-bottom: 2.5rem;
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom,
+      var(--accent-color) 0%,
+      rgba(139, 69, 19, 0.1) 100%);
   }
 
-  .post-preview a {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    padding: 1.5rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease;
+  .year-section {
+    margin-bottom: 3rem;
   }
 
-  .post-preview a:hover {
-    transform: translateY(-2px);
-  }
-
-  .post-preview h2 {
-    margin: 0;
+  .year-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
     color: var(--text-color);
   }
 
-  .post-preview time {
-    display: block;
-    font-size: 0.9rem;
-    color: rgba(44, 24, 16, 0.6);
-    margin: 0.5rem 0;
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
-  code {
-    background: rgba(139, 69, 19, 0.1);
-    padding: 0.2em 0.4em;
-    border-radius: 4px;
-    font-size: 0.9em;
+  .post-item {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .post-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    border: 3px solid var(--bg-color);
+    box-shadow: 0 0 0 2px var(--accent-color);
+  }
+
+  .post-item time {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    font-style: italic;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .post-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 1rem;
+    background: white;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .post-item a:hover {
+    transform: translateX(8px);
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 
+      0 4px 12px rgba(139, 69, 19, 0.05),
+      0 2px 4px rgba(139, 69, 19, 0.03);
+  }
+
+  .post-item h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+  }
+
+  .post-item:hover h3 {
+    color: var(--accent-color);
+  }
+
+  .post-item p {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    color: rgba(44, 24, 16, 0.8);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .archive-container {
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    .timeline {
+      padding-left: 1.5rem;
+    }
+
+    .post-item {
+      padding-left: 1rem;
+    }
+
+    .post-item::before {
+      left: -1.5rem;
+      width: 10px;
+      height: 10px;
+    }
+
+    .post-item a {
+      padding: 0.75rem;
+    }
   }
 </style>

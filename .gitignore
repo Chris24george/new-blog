@@ -24,7 +24,10 @@ pnpm-debug.log*
 .idea/
 
 # VSCode specific
-.vscode/*
+.vscode/
+.history/
+*.code-workspace
+# Keep specific VSCode config files if needed
 !.vscode/extensions.json
 !.vscode/launch.json
 !.vscode/settings.json

@@ -1,4 +1,62 @@
-# Astro Starter Kit: Basics
+# Astro Blog with ⚡ Bolt UI
+
+A modern, fast, and beautiful blog built with Astro and Bolt UI components. This blog showcases best practices in web development, performance optimization, and modern design principles.
+
+## 🚀 Features
+
+- Fast page loads with Astro's static site generation
+- Beautiful UI components from Bolt
+- Responsive design for all devices
+- SEO optimized
+- Dark mode support
+- Markdown/MDX support for blog posts
+
+## 🛠️ Tech Stack
+
+- [Astro](https://astro.build)
+- [Bolt UI](https://bolt.com)
+- TypeScript
+- Tailwind CSS
+
+## 🏃‍♂️ Getting Started
+
+1. Clone the repository
+```bash
+git clone [your-repo-url]
+cd astro-blog-bolt
+```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Start the development server
+```bash
+npm run dev
+```
+
+4. Open your browser and visit `http://localhost:4321`
+
+## 📝 Writing Blog Posts
+
+Add your blog posts in the `src/content/blog` directory using Markdown or MDX format.
+
+## 🚀 Deployment
+
+Build your site for production:
+```bash
+npm run build
+```
+
+Preview the build:
+```bash
+npm run preview
+```
+
+## 📄 License
+
+MIT License - feel free to use this project as a template for your own blog!
 
 ```sh
 npm create astro@latest -- --template basics
