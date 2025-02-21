@@ -125,15 +125,26 @@ const ogImageUrl = new URL(image, siteUrl || 'https://christonotes.com');
 <style is:global>
   :root {
     /* Light theme colors */
-    --bg-color: #faf6f1;
+    --bg-color: #fcf9f6;
     --text-color: #2c1810;
-    --accent-color: #8b4513;
-    --border-color: rgba(139, 69, 19, 0.2);
+    --accent-color: #9b4f1c;
+    --accent-rgb: 155, 79, 28;
+    --border-color: rgba(155, 79, 28, 0.15);
+    --card-bg: rgba(252, 249, 246, 0.7);
+    --card-bg-hover: rgba(252, 249, 246, 0.9);
+    --nav-bg: rgba(252, 249, 246, 0.85);
+    --nav-shadow: 
+      0 4px 20px rgba(155, 79, 28, 0.08),
+      0 2px 8px rgba(155, 79, 28, 0.06);
+    --card-shadow: 
+      0 4px 16px rgba(155, 79, 28, 0.08),
+      0 2px 4px rgba(155, 79, 28, 0.04);
     
     /* Transition for theme switching */
     --theme-transition: background-color 0.3s ease,
                        color 0.3s ease,
-                       border-color 0.3s ease;
+                       border-color 0.3s ease,
+                       box-shadow 0.3s ease;
   }
 
   /* Dark theme colors */
@@ -141,7 +152,17 @@ const ogImageUrl = new URL(image, siteUrl || 'https://christonotes.com');
     --bg-color: #1a1a1a;
     --text-color: #e1d9d1;
     --accent-color: #d4915b;
+    --accent-rgb: 212, 145, 91;
     --border-color: rgba(225, 217, 209, 0.1);
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --card-bg-hover: rgba(255, 255, 255, 0.05);
+    --nav-bg: rgba(32, 32, 32, 0.95);
+    --nav-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.2),
+      0 2px 8px rgba(0, 0, 0, 0.1);
+    --card-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.2),
+      0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -154,6 +175,9 @@ const ogImageUrl = new URL(image, siteUrl || 'https://christonotes.com');
     font-family: 'Lora', serif;
     background: var(--bg-color);
     color: var(--text-color);
+    background-image: 
+      radial-gradient(circle at 100% 0%, rgba(var(--accent-rgb), 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 0% 100%, rgba(var(--accent-rgb), 0.03) 0%, transparent 50%);
   }
 
   body {

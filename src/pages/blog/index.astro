@@ -103,7 +103,7 @@ const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
     width: 2px;
     background: linear-gradient(to bottom,
       var(--accent-color) 0%,
-      rgba(139, 69, 19, 0.1) 100%);
+      color-mix(in srgb, var(--accent-color) 20%, transparent) 100%);
   }
 
   .year-section {
