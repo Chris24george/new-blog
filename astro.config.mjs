@@ -1,9 +1,10 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   site: 'https://christonotes.com', // Your domain
-  integrations: [mdx()],
+  integrations: [mdx(), tailwind()],
   server: {
     host: true,
     port: 3000,

@@ -31,43 +31,51 @@ const ogImage = '/blog-social-card.jpg'; // Default OG image
   description="Language learning, history, philosophy, classic literature, miscellaneous thoughts"
   image={ogImage}
 >
-  <section class="hero">
-    <h1>Christo Notes</h1>
-    <p class="subtitle">Language learning, history, philosophy, classic literature, miscellaneous thoughts</p>
+  <section class="relative text-center py-12 md:py-16 overflow-hidden">
+    <div class="relative z-10">
+      <h1 class="text-5xl md:text-6xl font-bold font-playfair m-0 bg-gradient-to-br from-[var(--text-color)] via-[var(--accent-color)] to-[var(--text-color)] bg-clip-text text-transparent animate-gradient-x">
+        Christo Notes
+      </h1>
+      <p class="text-lg md:text-xl text-[var(--text-color)] opacity-90 mt-4 font-light tracking-wide max-w-2xl mx-auto leading-relaxed">
+        Language learning, history, philosophy, classic literature, miscellaneous thoughts
+      </p>
+    </div>
   </section>
 
-  <div class="timeline-container">
+  <div class="max-w-[680px] mx-auto relative">
     {allPosts.length === 0 ? (
-      <div class="coming-soon">
-        <h2>Essays Coming Soon</h2>
-        <p>I'm currently working on the first set of essays. Stay tuned!</p>
-        <p>In the meantime, you can <a href="/about">learn more about this blog</a> or <a href="/rss.xml">subscribe to the RSS feed</a> to be notified when new essays are published.</p>
+      <div class="text-center py-16 px-8 bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl my-8">
+        <h2 class="text-3xl text-[var(--text-color)] mb-4">Essays Coming Soon</h2>
+        <p class="text-[var(--text-color)] opacity-80 leading-relaxed my-4">I'm currently working on the first set of essays. Stay tuned!</p>
+        <p class="text-[var(--text-color)] opacity-80 leading-relaxed my-4">
+          In the meantime, you can <a href="/about" class="text-[var(--accent-color)] no-underline border-b border-transparent transition-all duration-200 hover:border-[var(--accent-color)]">learn more about this blog</a> or <a href="/rss.xml" class="text-[var(--accent-color)] no-underline border-b border-transparent transition-all duration-200 hover:border-[var(--accent-color)]">subscribe to the RSS feed</a> to be notified when new essays are published.
+        </p>
       </div>
     ) : (
       <>
         {years.length > 1 && (
-          <nav class="year-nav">
-            <div class="year-nav-inner">
+          <nav class="sticky top-4 z-10 mb-12 text-center p-2 backdrop-blur-md bg-[rgba(var(--accent-rgb),0.03)] border border-[rgba(var(--accent-rgb),0.15)] shadow-lg rounded-[30px] md:mb-12 md:p-2">
+            <div class="inline-flex gap-3 p-1 rounded-[30px] bg-transparent md:w-auto w-full overflow-x-auto scrollbar-none md:justify-center justify-start md:p-1 py-3 px-2 mask-edges">
               {years.map(year => (
-                <a href={`#year-${year}`} class="year-link">{year}</a>
+                <a href={`#year-${year}`} class="text-[var(--text-color)] no-underline px-5 py-2.5 rounded-[20px] font-playfair text-lg transition-all duration-300 ease-in-out relative opacity-85 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-y-[-1px] hover:bg-[rgba(var(--accent-rgb),0.05)] whitespace-nowrap tracking-wide year-link">{year}</a>
               ))}
             </div>
           </nav>
         )}
 
-        <div class="timeline">
+        <div class="relative pl-8 md:pl-6 timeline">
           {years.map(year => (
-            <section id={`year-${year}`} class="year-section">
-              <h2>{year}</h2>
-              <div class="posts-list">
+            <section id={`year-${year}`} class="mb-16 scroll-mt-28 md:mb-12 md:scroll-mt-24">
+              <h2 class="text-3xl mb-8 text-[var(--text-color)] opacity-80 md:text-2xl md:mb-6">{year}</h2>
+              <div class="flex flex-col gap-6">
                 {postsByYear[Number(year)].map((post: CollectionEntry<'blog'>) => (
-                  <article class="post-item">
-                    <time datetime={post.data.date.toISOString()}>
+                  <article class="relative pl-8 md:pl-6 post-item">
+                    <time datetime={post.data.date.toISOString()} class="block text-[var(--accent-color)] opacity-80 text-sm italic mb-1">
                       {format(post.data.date, 'MMM d')}
                     </time>
-                    <a href={`/blog/${post.slug}`}>
-                      <h3>{post.data.title}</h3>
-                      <p>{post.data.description}</p>
+                    <a href={`/blog/${post.slug}`} class="block p-6 md:p-4 bg-[var(--card-bg)] rounded-2xl border border-[var(--border-color)] transition-all duration-300 ease-out backdrop-blur-md hover:bg-[var(--card-bg-hover)] hover:translate-y-[-2px] hover:translate-x-1 hover:shadow-xl hover:border-[rgba(var(--accent-rgb),0.2)] group">
+                      <h3 class="m-0 text-xl text-[var(--text-color)] leading-snug transition-all duration-300 group-hover:text-[var(--accent-color)] group-hover:translate-x-0.5">{post.data.title}</h3>
+                      <p class="mt-2 mb-0 text-[var(--text-color)] opacity-85 leading-relaxed transition-opacity duration-300 group-hover:opacity-100">{post.data.description}</p>
                     </a>
                   </article>
                 ))}
@@ -79,398 +87,3 @@ const ogImage = '/blog-social-card.jpg'; // Default OG image
     )}
   </div>
 </Layout>
-
-<style>
-  .hero {
-    text-align: center;
-    padding: 4rem 0 3rem;
-  }
-
-  .hero h1 {
-    font-size: 3.5rem;
-    margin: 0;
-    background: linear-gradient(45deg, var(--text-color), var(--accent-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 
-      0 0 30px rgba(var(--accent-rgb), 0.2),
-      0 0 60px rgba(var(--accent-rgb), 0.1),
-      0 0 90px rgba(var(--accent-rgb), 0.05);
-    animation: glow 4s ease-in-out infinite alternate;
-  }
-
-  @keyframes glow {
-    from {
-      text-shadow: 
-        0 0 30px rgba(var(--accent-rgb), 0.2),
-        0 0 60px rgba(var(--accent-rgb), 0.1),
-        0 0 90px rgba(var(--accent-rgb), 0.05);
-    }
-    to {
-      text-shadow: 
-        0 0 40px rgba(var(--accent-rgb), 0.3),
-        0 0 80px rgba(var(--accent-rgb), 0.2),
-        0 0 120px rgba(var(--accent-rgb), 0.1);
-    }
-  }
-
-  .subtitle {
-    font-size: 1.2rem;
-    color: var(--text-color);
-    opacity: 0.8;
-    font-style: italic;
-    margin-top: 1rem;
-  }
-
-  .timeline-container {
-    max-width: 680px;
-    margin: 0 auto;
-    position: relative;
-  }
-
-  .year-nav {
-    position: sticky;
-    top: 1rem;
-    z-index: 10;
-    margin-bottom: 3rem;
-    text-align: center;
-    padding: 0.5rem;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    background: rgba(var(--accent-rgb), 0.03);
-    border: 1px solid rgba(var(--accent-rgb), 0.15);
-    box-shadow: 
-      0 4px 24px rgba(var(--accent-rgb), 0.08),
-      0 1px 8px rgba(var(--accent-rgb), 0.06);
-    border-radius: 30px;
-  }
-
-  .year-nav-inner {
-    display: inline-flex;
-    gap: 0.75rem;
-    padding: 0.25rem;
-    border-radius: 30px;
-    background: transparent;
-  }
-
-  .year-link {
-    color: var(--text-color);
-    text-decoration: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 20px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    opacity: 0.85;
-    background: transparent;
-    font-weight: 500;
-    text-shadow: 0 1px 2px rgba(var(--shadow-rgb), 0.1);
-  }
-
-  .year-link:hover {
-    opacity: 1;
-    color: var(--accent-color);
-    transform: translateY(-1px);
-    background: rgba(var(--accent-rgb), 0.05);
-  }
-
-  .year-link::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    padding: 1px;
-    background: linear-gradient(
-      45deg,
-      transparent,
-      rgba(var(--accent-rgb), 0.3),
-      transparent
-    );
-    -webkit-mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-  }
-
-  .year-link:hover::before {
-    background: linear-gradient(
-      45deg,
-      rgba(var(--accent-rgb), 0.2),
-      rgba(var(--accent-rgb), 0.6),
-      rgba(var(--accent-rgb), 0.2)
-    );
-  }
-
-  .timeline {
-    position: relative;
-    padding-left: 2rem;
-  }
-
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom,
-      var(--accent-color) 0%,
-      color-mix(in srgb, var(--accent-color) 15%, transparent));
-    box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.1);
-  }
-
-  .year-section {
-    margin-bottom: 4rem;
-    scroll-margin-top: 7rem;
-  }
-
-  .year-section h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: var(--text-color);
-    opacity: 0.8;
-  }
-
-  .posts-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .post-item {
-    position: relative;
-    padding-left: 2rem;
-  }
-
-  .post-item::before {
-    content: '';
-    position: absolute;
-    left: -2rem;
-    top: 0.5rem;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--accent-color);
-    border: 3px solid var(--bg-color);
-    box-shadow: 
-      0 0 0 2px var(--accent-color),
-      0 0 8px rgba(var(--accent-rgb), 0.2);
-    transition: all 0.3s ease;
-  }
-
-  .post-item:hover::before {
-    transform: scale(1.1);
-    box-shadow: 
-      0 0 0 2px var(--accent-color),
-      0 0 12px rgba(var(--accent-rgb), 0.3);
-  }
-
-  .post-item time {
-    font-size: 0.9rem;
-    color: var(--accent-color);
-    font-style: italic;
-    display: block;
-    margin-bottom: 0.25rem;
-    opacity: 0.8;
-  }
-
-  .post-item a {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    padding: 1.5rem;
-    background: var(--card-bg);
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: var(--card-shadow);
-  }
-
-  .post-item a:hover {
-    background: var(--card-bg-hover);
-    transform: translateY(-2px) translateX(4px);
-    box-shadow: 
-      0 8px 24px rgba(var(--accent-rgb), 0.12),
-      0 4px 8px rgba(var(--accent-rgb), 0.06);
-    border-color: rgba(var(--accent-rgb), 0.2);
-  }
-
-  .post-item h3 {
-    margin: 0;
-    font-size: 1.3rem;
-    color: var(--text-color);
-    line-height: 1.3;
-    transition: all 0.3s ease;
-  }
-
-  .post-item:hover h3 {
-    color: var(--accent-color);
-    transform: translateX(2px);
-  }
-
-  .post-item p {
-    margin: 0.5rem 0 0;
-    color: var(--text-color);
-    opacity: 0.85;
-    line-height: 1.6;
-    font-size: 1rem;
-    transition: opacity 0.3s ease;
-  }
-
-  .post-item:hover p {
-    opacity: 1;
-  }
-
-  @media (max-width: 768px) {
-    .hero {
-      padding: 3rem 0 2rem;
-    }
-
-    .hero h1 {
-      font-size: 2.5rem;
-    }
-
-    .year-nav {
-      margin: 0 0 2rem;
-      padding: 0.25rem;
-      border-radius: 20px;
-      background: rgba(var(--accent-rgb), 0.04);
-    }
-
-    .year-nav-inner {
-      width: 100%;
-      overflow-x: auto;
-      justify-content: flex-start;
-      padding: 0.75rem 0.5rem;
-      gap: 0.5rem;
-      mask-image: linear-gradient(
-        to right,
-        transparent,
-        black 5%,
-        black 95%,
-        transparent
-      );
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .year-nav-inner::-webkit-scrollbar {
-      display: none;
-    }
-
-    .year-link {
-      font-size: 1.1rem;
-      padding: 0.5rem 1rem;
-      white-space: nowrap;
-      letter-spacing: 0.02em;
-    }
-
-    .timeline {
-      padding-left: 1.5rem;
-    }
-
-    .year-section {
-      margin-bottom: 3rem;
-      scroll-margin-top: 6rem;
-    }
-
-    .year-section h2 {
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .post-item {
-      padding-left: 1.5rem;
-    }
-
-    .post-item::before {
-      left: -1.5rem;
-      width: 10px;
-      height: 10px;
-    }
-
-    .post-item a {
-      padding: 1rem;
-    }
-
-    .post-item h3 {
-      font-size: 1.2rem;
-    }
-  }
-
-  .coming-soon {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    margin: 2rem 0;
-  }
-
-  .coming-soon h2 {
-    font-size: 2rem;
-    color: var(--text-color);
-    margin-bottom: 1rem;
-  }
-
-  .coming-soon p {
-    color: var(--text-color);
-    opacity: 0.8;
-    line-height: 1.6;
-    margin: 1rem 0;
-  }
-
-  .coming-soon a {
-    color: var(--accent-color);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: all 0.2s ease;
-  }
-
-  .coming-soon a:hover {
-    border-bottom-color: var(--accent-color);
-  }
-
-  /* Add these CSS custom properties to :root */
-  :root {
-    --accent-rgb: 139, 69, 19;
-    --bg-rgb: 252, 249, 246;
-    --shadow-rgb: 0, 0, 0;
-    --nav-bg: rgba(255, 255, 255, 0.9);
-    --nav-shadow: 
-      0 4px 20px rgba(139, 69, 19, 0.08),
-      0 2px 8px rgba(139, 69, 19, 0.06);
-    --card-bg: rgba(255, 255, 255, 0.02);
-    --card-bg-hover: rgba(255, 255, 255, 0.05);
-    --card-shadow: 
-      0 4px 16px rgba(139, 69, 19, 0.06),
-      0 2px 4px rgba(139, 69, 19, 0.03);
-    --border-color: rgba(139, 69, 19, 0.15);
-  }
-
-  /* Dark mode overrides */
-  [data-theme="dark"] {
-    --accent-rgb: 212, 145, 91;
-    --bg-rgb: 26, 26, 26;
-    --shadow-rgb: 0, 0, 0;
-    --nav-bg: rgba(32, 32, 32, 0.95);
-    --nav-shadow: 
-      0 4px 20px rgba(0, 0, 0, 0.2),
-      0 2px 8px rgba(0, 0, 0, 0.1);
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --card-bg-hover: rgba(255, 255, 255, 0.05);
-    --card-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.2),
-      0 2px 8px rgba(0, 0, 0, 0.1);
-    --border-color: rgba(255, 255, 255, 0.05);
-  }
-</style>

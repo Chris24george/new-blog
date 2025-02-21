@@ -6,113 +6,40 @@ const { frontmatter } = Astro.props;
 ---
 
 <Layout title={`${frontmatter.title} | Elegant Scroll`}>
-  <article class="blog-post">
-    <header>
-      <h1>{frontmatter.title}</h1>
-      <time datetime={frontmatter.date}>
+  <article class="max-w-[700px] mx-auto">
+    <header class="text-center mb-12">
+      <h1 class="text-5xl m-0 font-playfair bg-gradient-to-r from-[color:var(--text-color)] to-[color:var(--accent-color)] bg-clip-text text-transparent">
+        {frontmatter.title}
+      </h1>
+      <time datetime={frontmatter.date} class="block mt-4 text-[rgba(44,24,16,0.6)] dark:text-[rgba(225,217,209,0.6)] italic">
         {format(new Date(frontmatter.date), 'MMMM d, yyyy')}
       </time>
     </header>
-    <div class="content">
+    <div class="prose prose-lg prose-stone dark:prose-invert max-w-none [&_h1]:font-playfair [&_h2]:font-playfair [&_h3]:font-playfair [&_h4]:font-playfair [&_h5]:font-playfair [&_h6]:font-playfair">
       <slot />
     </div>
   </article>
 </Layout>
 
-<style>
-  .blog-post {
-    max-width: 700px;
-    margin: 0 auto;
+<style is:global>
+  /* Custom styles for elements that can't be handled by Tailwind Typography */
+  .prose :global(blockquote) {
+    @apply border-l-4 border-[color:var(--accent-color)] bg-[rgba(139,69,19,0.05)] dark:bg-[rgba(139,69,19,0.1)] px-8 py-4 my-8 italic;
   }
 
-  header {
-    text-align: center;
-    margin-bottom: 3rem;
+  .prose :global(pre) {
+    @apply bg-[rgba(44,24,16,0.95)] text-[#faf6f1] p-6 rounded-lg overflow-x-auto my-8;
   }
 
-  h1 {
-    font-size: 3rem;
-    margin: 0;
-    background: linear-gradient(45deg, var(--text-color), var(--accent-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .prose :global(pre code) {
+    @apply bg-transparent p-0 text-sm;
   }
 
-  time {
-    display: block;
-    margin-top: 1rem;
-    color: rgba(44, 24, 16, 0.6);
-    font-style: italic;
+  .prose :global(code) {
+    @apply bg-[rgba(139,69,19,0.1)] px-2 py-1 rounded-md text-sm;
   }
 
-  .content {
-    font-size: 1.1rem;
-  }
-
-  .content :global(h2) {
-    font-size: 1.8rem;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .content :global(h3) {
-    font-size: 1.4rem;
-    margin-top: 2rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .content :global(p) {
-    margin: 1.5rem 0;
-  }
-
-  .content :global(blockquote) {
-    margin: 2rem 0;
-    padding: 1rem 2rem;
-    border-left: 4px solid var(--accent-color);
-    background: rgba(139, 69, 19, 0.05);
-    font-style: italic;
-  }
-
-  .content :global(blockquote p) {
-    margin: 0;
-  }
-
-  .content :global(ul), .content :global(ol) {
-    margin: 1.5rem 0;
-    padding-left: 1.5rem;
-  }
-
-  .content :global(li) {
-    margin: 0.5rem 0;
-  }
-
-  .content :global(img) {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin: 2rem 0;
-  }
-
-  .content :global(code) {
-    background: rgba(139, 69, 19, 0.1);
-    padding: 0.2em 0.4em;
-    border-radius: 4px;
-    font-size: 0.9em;
-  }
-
-  .content :global(pre) {
-    background: rgba(44, 24, 16, 0.95);
-    color: #faf6f1;
-    padding: 1.5rem;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin: 2rem 0;
-  }
-
-  .content :global(pre code) {
-    background: none;
-    padding: 0;
-    font-size: 0.9em;
+  .prose :global(img) {
+    @apply rounded-lg my-8;
   }
 </style>

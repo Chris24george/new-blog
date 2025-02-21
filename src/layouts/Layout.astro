@@ -3,6 +3,7 @@ import '@fontsource/playfair-display/400.css';
 import '@fontsource/playfair-display/700.css';
 import '@fontsource/lora/400.css';
 import '@fontsource/lora/400-italic.css';
+import '../styles/base.css';
 import ThemeToggle from '../components/ThemeToggle.astro';
 
 interface Props {
@@ -26,7 +27,7 @@ const ogImageUrl = new URL(image, siteUrl || 'https://christonotes.com');
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="bg-[color:var(--bg-color)] text-[color:var(--text-color)] transition-colors duration-300 bg-gradient-radial font-['Lora',serif]">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -93,16 +94,17 @@ const ogImageUrl = new URL(image, siteUrl || 'https://christonotes.com');
     <link rel="preload" as="style" href="/@fontsource/playfair-display/400.css" />
     <link rel="preload" as="style" href="/@fontsource/playfair-display/700.css" />
     <link rel="preload" as="style" href="/@fontsource/lora/400.css" />
+    <link rel="preload" as="style" href="/@fontsource/lora/400-italic.css" />
   </head>
-  <body>
-    <div class="container">
-      <header>
-        <nav>
-          <a href="/" class="site-title">Christo Notes</a>
-          <div class="nav-links">
-            <a href="/about">About</a>
+  <body class="min-h-screen m-0 leading-[1.8]">
+    <div class="site-container pt-4 md:pt-4">
+      <header class="mb-16 border-b border-[color:var(--border-color)] pb-4">
+        <nav class="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
+          <a href="/" class="blog-title text-center md:text-left">Christo Notes</a>
+          <div class="flex justify-center gap-6 items-center">
+            <a href="/about" class="nav-link">About</a>
             <ThemeToggle />
-            <a href="/rss.xml" aria-label="RSS Feed">
+            <a href="/rss.xml" class="nav-link" aria-label="RSS Feed">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 11a9 9 0 0 1 9 9" />
                 <path d="M4 4a16 16 0 0 1 16 16" />
@@ -115,172 +117,9 @@ const ogImageUrl = new URL(image, siteUrl || 'https://christonotes.com');
       <main>
         <slot />
       </main>
-      <footer>
+      <footer class="mt-16 pt-8 border-t border-[color:var(--border-color)] text-center text-sm text-[color:var(--text-color)] opacity-80">
         <p>&copy; {new Date().getFullYear()} Christo. All rights reserved.</p>
       </footer>
     </div>
   </body>
 </html>
-
-<style is:global>
-  :root {
-    /* Light theme colors */
-    --bg-color: #fcf9f6;
-    --text-color: #2c1810;
-    --accent-color: #9b4f1c;
-    --accent-rgb: 155, 79, 28;
-    --border-color: rgba(155, 79, 28, 0.15);
-    --card-bg: rgba(252, 249, 246, 0.7);
-    --card-bg-hover: rgba(252, 249, 246, 0.9);
-    --nav-bg: rgba(252, 249, 246, 0.85);
-    --nav-shadow: 
-      0 4px 20px rgba(155, 79, 28, 0.08),
-      0 2px 8px rgba(155, 79, 28, 0.06);
-    --card-shadow: 
-      0 4px 16px rgba(155, 79, 28, 0.08),
-      0 2px 4px rgba(155, 79, 28, 0.04);
-    
-    /* Transition for theme switching */
-    --theme-transition: background-color 0.3s ease,
-                       color 0.3s ease,
-                       border-color 0.3s ease,
-                       box-shadow 0.3s ease;
-  }
-
-  /* Dark theme colors */
-  [data-theme="dark"] {
-    --bg-color: #1a1a1a;
-    --text-color: #e1d9d1;
-    --accent-color: #d4915b;
-    --accent-rgb: 212, 145, 91;
-    --border-color: rgba(225, 217, 209, 0.1);
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --card-bg-hover: rgba(255, 255, 255, 0.05);
-    --nav-bg: rgba(32, 32, 32, 0.95);
-    --nav-shadow: 
-      0 4px 20px rgba(0, 0, 0, 0.2),
-      0 2px 8px rgba(0, 0, 0, 0.1);
-    --card-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.2),
-      0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    html {
-      transition: var(--theme-transition);
-    }
-  }
-
-  html {
-    font-family: 'Lora', serif;
-    background: var(--bg-color);
-    color: var(--text-color);
-    background-image: 
-      radial-gradient(circle at 100% 0%, rgba(var(--accent-rgb), 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 0% 100%, rgba(var(--accent-rgb), 0.03) 0%, transparent 50%);
-  }
-
-  body {
-    margin: 0;
-    min-height: 100vh;
-    line-height: 1.8;
-  }
-
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  header {
-    margin-bottom: 4rem;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 1rem;
-  }
-
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .site-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    color: var(--text-color);
-    text-decoration: none;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-  }
-
-  .nav-links a {
-    color: var(--text-color);
-    text-decoration: none;
-    transition: color 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .nav-links a:hover {
-    color: var(--accent-color);
-  }
-
-  footer {
-    margin-top: 4rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-color);
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--text-color);
-    opacity: 0.8;
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-    }
-
-    nav {
-      flex-direction: column;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .nav-links {
-      gap: 1.5rem;
-    }
-  }
-
-  /* Performance optimizations for images */
-  img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  /* Improved accessibility styles */
-  :focus {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
-</style>

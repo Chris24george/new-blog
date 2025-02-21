@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme colors */
+    --bg-color: #fcf9f6;
+    --text-color: #2c1810;
+    --accent-color: #9b4f1c;
+    --accent-rgb: 155, 79, 28;
+    --border-color: rgba(155, 79, 28, 0.15);
+    --card-bg: rgba(252, 249, 246, 0.7);
+    --card-bg-hover: rgba(252, 249, 246, 0.9);
+    --nav-bg: rgba(252, 249, 246, 0.85);
+  }
+
+  [data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color: #e1d9d1;
+    --accent-color: #d4915b;
+    --accent-rgb: 212, 145, 91;
+    --border-color: rgba(225, 217, 209, 0.1);
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --card-bg-hover: rgba(255, 255, 255, 0.05);
+    --nav-bg: rgba(32, 32, 32, 0.95);
+  }
+}
+
+@layer components {
+  .site-container {
+    @apply max-w-[800px] mx-auto px-4 pt-4;
+  }
+
+  @screen md {
+    .site-container {
+      @apply pt-16;
+    }
+  }
+
+  .nav-link {
+    @apply text-[color:var(--text-color)] no-underline transition-colors duration-200 hover:text-[color:var(--accent-color)] flex items-center gap-2;
+  }
+
+  .blog-title {
+    @apply font-['Playfair_Display'] text-3xl text-[color:var(--text-color)] no-underline;
+  }
+} 
